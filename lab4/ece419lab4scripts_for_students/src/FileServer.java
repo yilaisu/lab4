@@ -9,6 +9,9 @@ import org.apache.zookeeper.data.Stat;
 import org.apache.zookeeper.Watcher.Event.EventType;
 
 import java.io.IOException;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.io.File;
 
 public class FileServer {
     
@@ -23,8 +26,19 @@ public class FileServer {
             return;
         }
 
-        FileServer fileServer = new FileServer(args[0]);   
+        FileServer fileServer = new FileServer(args[0]);  
+
+        // read dictionary
+        try{
+            Scanner s = new Scanner(new File(args[1]));
+            ArrayList<String> list = new ArrayList<String>();
+            while (s.hasNext()){
+                list.add(s.next());
+            }
+            s.close(); 
+        } catch(Exception e) {}
  
+
         System.out.println("Sleeping...");
         try {
             Thread.sleep(5000);
@@ -34,7 +48,7 @@ public class FileServer {
         
         System.out.println("Sleeping...");
         while (true) {
-            //try{ Thread.sleep(5000); } catch (Exception e) {}
+            try{ Thread.sleep(5000); } catch (Exception e) {}
         }
     }
 
