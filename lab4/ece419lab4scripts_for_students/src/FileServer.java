@@ -12,32 +12,42 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
+import java.nio.file.*;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 
 public class FileServer {
     
     String myPath = "/primaryFileServer";
     ZkConnector zkc;
     Watcher watcher;
+    static ArrayList<String> list;
 
     public static void main(String[] args) {
       
         if (args.length != 1) {
-            System.out.println("Usage: java -classpath lib/zookeeper-3.3.2.jar:lib/log4j-1.2.15.jar:. FileServer zkServer:clientPort");
+            System.out.println("Usage: java -classpath lib/zookeeper-3.3.2.jar:lib/log4j-1.2.15.jar:. FileServer zkServer:clientPort dictPath");
             return;
         }
 
         FileServer fileServer = new FileServer(args[0]);  
+        String dictPath = "dictionary/lowercase.rand";//args[1];
+        System.out.println(Paths.get(dictPath));
 
         // read dictionary
         try{
-            Scanner s = new Scanner(new File(args[1]));
-            ArrayList<String> list = new ArrayList<String>();
+            Scanner s = new Scanner(new File(dictPath));
+            list = new ArrayList<String>();
             while (s.hasNext()){
                 list.add(s.next());
             }
             s.close(); 
-        } catch(Exception e) {}
+        } catch(Exception e) {} 
  
+        System.out.println("Dict Size: " + list.size() );
 
         System.out.println("Sleeping...");
         try {
